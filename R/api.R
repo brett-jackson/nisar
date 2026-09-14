@@ -1,9 +1,22 @@
 # Functions for implementing API for NISAR data
 
-# Get Amazon s3 credentials
-get_s3_credentials <- function(user, pass)
+# Login to earthdata
+nisar_auth <- function(user=NULL, pass=NULL)
 {
-    http_get <- httr2::request(NISAR_S3_ENDPOINT)
-    response <- httr2::req_perform(http_get)
-    return(response)
+    # Store relevant .Renviron values
+    env_username <- Sys.getenv("EARTHDATA_USERNAME")
+    env_password <- Sys.getenv("EARTHDATA_PASSWORD")
+
+    # Use environment variables for login credentials if needed
+    if( is.null(user) & !is.null(env_username) )
+    {
+        user <- env_username
+    }
+    if( is.null(pass) & !is.null(env_password) )
+    {
+        pass <- env_password
+    }
+
+    # Use earthdatalogin for handling login logic
+    earthdatalogin::edl_netrc(username=user,password=pass)
 }
