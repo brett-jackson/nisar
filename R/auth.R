@@ -31,20 +31,20 @@ s3_auth <- function( edl_token="", user="", pass="" )
     {
         # Add EDL token to request header
         s3_auth_req <- s3_auth_req |>
-            httr2::req_headers( Authorization = edl_token )
+            httr2::req_auth_bearer_token( edl_token )
     }
     # Use EDL token if available in environment
     else if( (env_edl <- Sys.getenv("EDL_TOKEN")) != "" )
     {
         s3_auth_req <- s3_auth_req |>
-            httr2::req_headers( Authorization = env_edl )
+            httr2::req_auth_bearer_token( env_edl )
     }
     # Use user/pass if EDL token is unavailable
     else
     {
         earthdata_auth( user=user, pass=pass )
     }
-        
+
     # Send request for S3 credentials
     s3_auth_resp <- s3_auth_req |> 
         httr2::req_perform()
