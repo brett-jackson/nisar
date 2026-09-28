@@ -68,10 +68,10 @@ s3_store_cred <- function(creds, verbose = FALSE) {
     Sys.setenv("AWS_KEY_VAL" = creds[[AWS_KEY_VAL_IDX]])
     Sys.setenv("AWS_TOKEN" = creds[[AWS_TOKEN_IDX]])
     vprint(verbose, "Stored AWS credentials to session environment")
-    if (AWS_EXPIR_IDX %in% names(creds)) {
-      Sys.setenv("AWS_EXPIR" = creds[[AWS_EXPIR_IDX]])
+    if (AWS_EXPIRY_IDX %in% names(creds)) {
+      Sys.setenv("AWS_EXPIRY" = creds[[AWS_EXPIRY_IDX]])
     } else {
-      vprint(verbose, "Missing ", AWS_EXPIR_IDX, " in credential response.")
+      vprint(verbose, "Missing ", AWS_EXPIRY_IDX, " in credential response.")
     }
   } else {
     # Throw error if essential keys are missing
