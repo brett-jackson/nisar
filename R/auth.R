@@ -45,7 +45,7 @@ s3_auth <- function(edl_token = "", user = "", pass = "", verbose = FALSE) {
     vprint(verbose, "Added EDL_TOKEN from environment variable", s3_auth_req)
   } else {
     # Use user/pass if EDL token is unavailable
-    ed_auth <- earthdata_auth(user = user, pass = pass)
+    ed_auth <- earthdata_auth(user = user, pass = pass, verbose = verbose)
     vprint(verbose, "Performed user/pass auth from earthdatalogin", ed_auth)
   }
 
