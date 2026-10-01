@@ -21,7 +21,15 @@ earthdata_auth <- function(user = "", pass = "", verbose = FALSE) {
   earthdatalogin::edl_netrc(username = user, password = pass)
 }
 
-# Request Amazon S3 credentials
+#' Request Amazon S3 credentials
+#'
+#' Gets a AWS key and token for NISAR S3 bucket.
+#'
+#' @param edl_token EDL token value as string. Optional if already store in env.
+#' @param user Username string, alternative to token when used with password.
+#' @return pass Password string, alternative to token when used with username.
+#' @return verbose Boolean to flag output verbosity.
+#' @export
 s3_auth <- function(edl_token = "", user = "", pass = "", verbose = FALSE) {
   s3_auth_req <- httr2::request(NISAR_S3_ENDPOINT)
   vprint(verbose, "Created S3 credential request")
