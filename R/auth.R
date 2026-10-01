@@ -27,8 +27,8 @@ earthdata_auth <- function(user = "", pass = "", verbose = FALSE) {
 #'
 #' @param edl_token EDL token value as string. Optional if already store in env.
 #' @param user Username string, alternative to token when used with password.
-#' @return pass Password string, alternative to token when used with username.
-#' @return verbose Boolean to flag output verbosity.
+#' @param pass Password string, alternative to token when used with username.
+#' @param verbose Boolean to flag output verbosity.
 #' @export
 s3_auth <- function(edl_token = "", user = "", pass = "", verbose = FALSE) {
   s3_auth_req <- httr2::request(NISAR_S3_ENDPOINT)
@@ -62,19 +62,22 @@ s3_auth <- function(edl_token = "", user = "", pass = "", verbose = FALSE) {
 
   # Extract credentials from response
   httr2::resp_body_json(s3_auth_resp) |> s3_store_cred(verbose)
+
+  vprint(verbose, paste0(s3_ttl() ," seconds until token expiration."))
 }
 
 # Store S3 AWS credentials in session environment
 s3_store_cred <- function(creds, verbose = FALSE) {
   key <- ""
   # Check that the S3 credentials are formatted as expected
-  if ((key <- AWS_KEY_ID_IDX) %in% names(creds) &&
-    (key <- AWS_KEY_VAL_IDX) %in% names(creds) &&
-    (key <- AWS_TOKEN_IDX) %in% names(creds)) {
+  if ((key <- AWS_ACCESS_KEY_ID_IDX) %in% names(creds) &&
+    (key <- AWS_SECRET_ACCESS_KEY_IDX) %in% names(creds) &&
+    (key <- AWS_SESSION_TOKEN_IDX) %in% names(creds)) {
     # Store AWS credentials to session environment
-    Sys.setenv("AWS_KEY_ID" = creds[[AWS_KEY_ID_IDX]])
-    Sys.setenv("AWS_KEY_VAL" = creds[[AWS_KEY_VAL_IDX]])
-    Sys.setenv("AWS_TOKEN" = creds[[AWS_TOKEN_IDX]])
+    Sys.setenv("AWS_ACCESS_KEY_ID" = creds[[AWS_ACCESS_KEY_ID_IDX]])
+    Sys.setenv("AWS_SECRET_ACCESS_KEY" = creds[[AWS_SECRET_ACCESS_KEY_IDX]])
+    Sys.setenv("AWS_SESSION_TOKEN" = creds[[AWS_SESSION_TOKEN_IDX]])
+    Sys.setenv("AWS_DEFAULT_REGION" = AWS_DEFAULT_REGION)
     vprint(verbose, "Stored AWS credentials to session environment")
     if (AWS_EXPIRY_IDX %in% names(creds)) {
       Sys.setenv("AWS_EXPIRY" = creds[[AWS_EXPIRY_IDX]])

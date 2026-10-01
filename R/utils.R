@@ -13,5 +13,5 @@ vprint <- function(verbose, ...) {
 # Find the remaining seconds until an S3 token expires
 s3_ttl <- function() {
   aws_expiry <- as.POSIXct(Sys.getenv("AWS_EXPIRY"),tryFormats=c("%Y-%m-%d %H:%M:%S"),tz="UTC")
-  as.numeric(difftime(aws_expiry,Sys.time(),units = "secs"))
+  as.numeric(difftime(aws_expiry, Sys.time(), units = "secs"))
 }
