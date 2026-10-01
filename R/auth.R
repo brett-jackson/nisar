@@ -17,7 +17,7 @@ earthdata_auth <- function(user = "", pass = "", verbose = FALSE) {
   }
 
   # Use earthdatalogin for handling login logic
-  vprint("Logging on to earthdata")
+  vprint(verbose, "Logging on to earthdata")
   earthdatalogin::edl_netrc(username = user, password = pass)
 }
 
